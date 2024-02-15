@@ -1,0 +1,35 @@
+@startuml
+class Circle {
+- Point center
+- double radius
+- Color strokeColor
+- Color fillColor
++ <<Create>> Circle()
++ <<Create>> Circle(Point,double)
++ <<Create>> Circle(Point,Point)
++ double getArea()
++ EForm getType()
++ void paint(GraphicsContext)
++ boolean equals(Object)
++ int hashCode()
++ Circle clone()
++ String toString()
+}
+class Point {
+- double x
+- double y
++ <<Create>> Point()
++ <<Create>> Point(double,double)
++ void set(double,double)
++ Point getMiddlePoint(Point)
++ double getDistance(Point)
++ double getHorizontalDistance(Point)
++ double getVerticalDistance(Point)
++ Point getTopLeftCorner(Point)
++ void paint(GraphicsContext)
++ boolean equals(Object)
++ int hashCode()
++ Point clone()
++ String toString()
+}
+@enduml

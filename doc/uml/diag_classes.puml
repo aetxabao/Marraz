@@ -1,0 +1,198 @@
+@startuml
+class controller.DialogController {
+- Map<String,Integer> drawingsMap
++ void initialize()
++ void setDrawingsMap(Map<String,Integer>)
+~ void accept(ActionEvent)
+~ void cancel(ActionEvent)
+}
+class manager.Manager {
+- GraphicsContext gc
+- List<AForm> formsList
+- List<Point> pointsList
+- EForm tool
+- Color strokeColor
+- Color fillColor
++ <<Create>> Manager(GraphicsContext)
++ EForm getTool()
++ void setTool(EForm)
++ int getNumeroPuntos(EForm)
++ void resetearPuntos()
++ void addPoint(double,double)
++ void setStrokeColor(Color)
++ void setFillColor(Color)
++ void cleanCanvas()
++ double getAreaSum()
++ int saveDrawing()
++ Map<String,Integer> getDrawings()
++ void loadDrawing(int)
+}
+class app.App {
++ void start(Stage)
++ {static} void main(String[])
+}
+abstract class model.AForm {
+# ColorRGBO strokeColor
++ <<Create>> AForm()
++ Color getJavaFxStrokeColor()
++ void setJavaFxStrokeColor(Color)
++ {abstract}void paint(GraphicsContext)
++ {abstract}EForm getType()
+}
+class model.Line {
+- Point p1
+- Point p2
++ <<Create>> Line()
++ <<Create>> Line(Point,Point)
++ void paint(GraphicsContext)
++ Line clone()
++ EForm getType()
++ String toString()
+}
+class io.Serializer {
++ {static} AForm fromJSON(String,EForm)
++ {static} String toJSON(AForm)
+}
+class db.DbCon {
+- {static} String dbPath
+- {static} Connection con
++ {static} boolean testConnection()
++ {static} void setDbPath(String)
++ {static} Connection getConnection()
++ {static} void closeConnections()
+}
+class db.Dao {
++ {static} boolean testConnection()
++ {static} void setupConnection(String)
++ {static} int save(List<AForm>)
++ {static} Map<String,Integer> getDrawings()
++ {static} List<AForm> getForms(int)
+}
+class controller.MainController {
+- Manager manager
++ void initialize()
++ void onCanvasMouseClicked(MouseEvent)
++ void onStrokeColorChange(ActionEvent)
++ void onMenuStrokeColorChange(ActionEvent)
++ void onFillColorChange(ActionEvent)
++ void onMenuFillColorChange(ActionEvent)
++ void onToolChange(ActionEvent)
++ void onCleanCanvas(ActionEvent)
++ void onGetArea(ActionEvent)
++ void onAbout(ActionEvent)
++ void onSaveDrawing(ActionEvent)
+~ void onLoadDrawing(ActionEvent)
+~ void onClose(ActionEvent)
+}
+class model.House {
++ <<Create>> House()
++ <<Create>> House(Point,Point,Point)
++ void paint(GraphicsContext)
++ EForm getType()
++ double getArea()
+}
+class model.Circle {
+- Point center
+- double radius
++ <<Create>> Circle()
++ <<Create>> Circle(Point,double)
++ <<Create>> Circle(Point,Point)
++ void paint(GraphicsContext)
++ double getArea()
++ EForm getType()
++ boolean equals(Object)
++ int hashCode()
++ Circle clone()
++ String toString()
+}
+class Main {
++ {static} void main(String[])
+}
+class model.Point {
+- double x
+- double y
++ <<Create>> Point()
++ <<Create>> Point(double,double)
++ void set(double,double)
++ Point getMiddlePoint(Point)
++ double getDistance(Point)
++ double getHorizontalDistance(Point)
++ double getVerticalDistance(Point)
++ Point getTopLeftCorner(Point)
++ void paint(GraphicsContext)
++ boolean equals(Object)
++ int hashCode()
++ Point clone()
++ String toString()
+}
+abstract class model.AFormFillable {
+# ColorRGBO fillColor
++ <<Create>> AFormFillable()
++ ColorRGBO getFillColor()
++ void setFillColor(ColorRGBO)
++ Color getJavaFxFillColor()
++ void setJavaFxFillColor(Color)
++ {abstract}double getArea()
+}
+class model.ColorRGBO {
+- double red
+- double green
+- double blue
+- double opacity
++ <<Create>> ColorRGBO()
++ <<Create>> ColorRGBO(double,double,double,double)
++ <<Create>> ColorRGBO(Color)
++ Color getJavaFxColor()
++ {static} Color getJavaFxColor(String)
+}
+class model.Rectangle {
+# Point corner
+# double width
+# double height
++ <<Create>> Rectangle()
++ <<Create>> Rectangle(Point,double,double)
++ <<Create>> Rectangle(Point,Point)
++ Point getEsquinaContraria()
++ void paint(GraphicsContext)
++ double getArea()
++ Rectangle clone()
++ EForm getType()
++ String toString()
+}
+class model.Triangle {
+- Point point1
+- Point point2
+- Point point3
++ <<Create>> Triangle()
++ <<Create>> Triangle(Point,Point,Point)
++ void paint(GraphicsContext)
++ double getArea()
++ EForm getType()
++ String toString()
+}
+
+
+Main ..> app.App
+app.App ..> controller.MainController
+controller.MainController ..> controller.DialogController
+controller.MainController --> manager.Manager
+manager.Manager *-> model.AForm
+manager.Manager *-> model.Point
+model.AForm --> model.ColorRGBO
+model.AFormFillable --> model.ColorRGBO
+model.Line *-> model.Point
+model.Triangle *-> model.Point
+model.Circle --> model.Point
+model.Rectangle --> model.Point
+model.House ..> model.Point
+model.AForm <|-- model.Line
+model.Rectangle <|-- model.House
+model.AFormFillable <|-- model.Circle
+model.AForm <|-- model.AFormFillable
+model.AFormFillable <|-- model.Rectangle
+model.AFormFillable <|-- model.Triangle
+db.Dao ..> db.DbCon
+db.Dao ..> io.Serializer
+manager.Manager ..> db.Dao
+io.Serializer ..> model.AForm
+@enduml

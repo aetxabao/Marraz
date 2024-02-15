@@ -1,0 +1,60 @@
+@startuml
+class controller.DialogController {
+}
+class manager.Manager {
+}
+class app.App {
+}
+abstract class model.AForm {
+}
+class model.Line {
+}
+class io.Serializer {
+}
+class db.DbCon {
+}
+class db.Dao {
+}
+class controller.MainController {
+}
+class model.House {
+}
+class model.Circle {
+}
+class Main {
+}
+class model.Point {
+}
+abstract class model.AFormFillable {
+}
+class model.ColorRGBO {
+}
+class model.Rectangle {
+}
+class model.Triangle {
+}
+
+Main ..> app.App
+app.App ..> controller.MainController
+controller.MainController ..> controller.DialogController
+controller.MainController --> manager.Manager
+manager.Manager *-> model.AForm
+manager.Manager *-> model.Point
+model.AForm --> model.ColorRGBO
+model.AFormFillable --> model.ColorRGBO
+model.Line *-> model.Point
+model.Triangle *-> model.Point
+model.Circle --> model.Point
+model.Rectangle --> model.Point
+model.House ..> model.Point
+model.AForm <|-- model.Line
+model.Rectangle <|-- model.House
+model.AFormFillable <|-- model.Circle
+model.AForm <|-- model.AFormFillable
+model.AFormFillable <|-- model.Rectangle
+model.AFormFillable <|-- model.Triangle
+db.Dao ..> db.DbCon
+db.Dao ..> io.Serializer
+manager.Manager ..> db.Dao
+io.Serializer ..> model.AForm
+@enduml

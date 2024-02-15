@@ -1,0 +1,26 @@
+@startuml
+class controller.DialogController {
+}
+class manager.Manager {
+}
+class app.App {
+}
+class io.Serializer {
+}
+class db.DbCon {
+}
+class db.Dao {
+}
+class controller.MainController {
+}
+class Main {
+}
+
+Main ..> app.App
+app.App ..> controller.MainController
+controller.MainController ..> controller.DialogController
+controller.MainController --> manager.Manager
+db.Dao ..> db.DbCon
+db.Dao ..> io.Serializer
+manager.Manager ..> db.Dao
+@enduml

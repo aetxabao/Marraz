@@ -1,0 +1,34 @@
+@startuml
+abstract class model.AForm {
+}
+class model.Line {
+}
+class model.House {
+}
+class model.Circle {
+}
+class model.Point {
+}
+abstract class model.AFormFillable {
+}
+class model.ColorRGBO {
+}
+class model.Rectangle {
+}
+class model.Triangle {
+}
+
+model.AForm --> model.ColorRGBO
+model.AFormFillable --> model.ColorRGBO
+model.Line *-> model.Point
+model.Triangle *-> model.Point
+model.Circle --> model.Point
+model.Rectangle --> model.Point
+model.House ..> model.Point
+model.AForm <|-- model.Line
+model.Rectangle <|-- model.House
+model.AFormFillable <|-- model.Circle
+model.AForm <|-- model.AFormFillable
+model.AFormFillable <|-- model.Rectangle
+model.AFormFillable <|-- model.Triangle
+@enduml
